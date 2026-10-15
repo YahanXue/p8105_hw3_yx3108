@@ -33,11 +33,6 @@ dim(ny_noaa)
 
 ```
 
-The `ny_noaa` dataset contains 2,595,176 observations and 7 variables. It includes daily meteorological observations from weather stations across New York State.
-
-Key variables include station ID (`id`), observation date (`date`), precipitation (`prcp`), snowfall (`snow`), snow depth (`snwd`), maximum temperature (`tmax`), and minimum temperature (`tmin`).
-
-
 ```{r noaa-missing}
 missing_summary = ny_noaa |>
   summarize(
@@ -63,11 +58,9 @@ missing_percent = ny_noaa |>
 missing_percent
 ```
 
-The `ny_noaa` dataset contains 2,595,176 observations and 7 variables. It includes daily weather records from weather stations across New York State.
+The `ny_noaa` dataset contains 2,595,176 observations and 7 variables. It includes daily weather records from stations across New York State. The main variables include station ID, date, precipitation, snowfall, snow depth, maximum temperature, and minimum temperature.
 
-The key variables include station ID (`id`), date (`date`), precipitation (`prcp`), snowfall (`snow`), snow depth (`snwd`), maximum temperature (`tmax`), and minimum temperature (`tmin`).
-
-Missing values are present in several weather variables. In particular, missing temperature measurements may affect the analysis of daily maximum and minimum temperatures. Missing observations will be handled appropriately when calculating summaries and producing visualizations.
+Missing values are common in some variables. About 43.7% of the maximum and minimum temperature observations are missing. Snow depth has 22.8% missing values, snowfall has 14.7%, and precipitation has 5.62%. The missing data may affect the analysis, especially for temperature.
 
 ## Data cleaning
 
@@ -99,9 +92,9 @@ noaa_clean |>
   count(snow, sort = TRUE) |>
   head(10)
 ```
-The most common snowfall value is 0 mm, with 2,008,508 observations. The next most common values are 25 mm, 13 mm, and 51 mm. This makes sense because most days have no snowfall. The dataset also contains 381,221 missing snowfall observations.
-## Average maximum temperature in January and July
+The most common snowfall value is 0 mm, with 2,008,508 observations. The next most common values are 25 mm, 13 mm, and 51 mm. This makes sense because most days have no snowfall. The dataset also contains 381,221 missing snowfall observations.The nonzero values such as 13 mm, 25 mm, and 51 mm may also reflect the way snowfall measurements are recorded and rounded.
 
+## Average maximum temperature in January and July
 ```{r temperature-summary}
 noaa_temp = noaa_clean |>
   filter(month %in% c(1, 7)) |>
@@ -147,7 +140,6 @@ temp_plot = noaa_clean |>
   ) +
   theme_minimal()
 
-temp_plot
 ```
 
 ```{r snowfall-distribution}
@@ -171,7 +163,6 @@ snow_plot = noaa_clean |>
     )
   )
 
-snow_plot
 ```
 
 
@@ -180,7 +171,9 @@ snow_plot
   patchwork::plot_layout(widths = c(1, 1.5))
 
 ```
-There is a clear positive relationship between minimum and maximum temperatures. As minimum temperature increases, maximum temperature also tends to increase. Most observations are concentrated in the middle of the plot, with a few extreme values.Snowfall distributions are similar across most years. The median snowfall is around 25 mm, and the middle 50% of observations generally falls between about 13 and 51 mm. Some years, such as 2006 and 2010, show somewhat different distributions. There is no obvious long-term trend in the snowfall amounts shown.
+There is a clear positive relationship between minimum and maximum temperatures. As minimum temperature increases, maximum temperature also tends to increase. Most observations are concentrated in the middle of the plot, with a few extreme values.
+
+Snowfall distributions are fairly similar across most years. The median snowfall is around 25 mm, and the middle 50% of observations generally falls between about 13 and 51 mm. Some years, such as 2006 and 2010, show somewhat different distributions. There is no obvious long-term trend in the snowfall amounts shown.
 
 # Problem 2
 
